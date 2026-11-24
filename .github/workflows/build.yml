@@ -13,16 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Create Flutter project if missing
+      - name: Scaffold missing Flutter project files
         run: |
           if [ ! -f "pubspec.yaml" ]; then
-            flutter create . --org com.example.store --project-name store_app
+            flutter create /tmp/flutter_template --org com.example.store --project-name store_app
+            cp -rn /tmp/flutter_template/. .
           fi
 
       - name: Install dependencies
